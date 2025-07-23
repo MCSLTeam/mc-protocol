@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mc_protocol"  # PyPI 上的唯一名称（不能重复）
+version = "1.0.02-snapshot"           # 版本号
+authors = [
+    { name = "c2yz", email = "c2yzawa@outlook.com" },
+]
+description = "A quick and easy-to-use library for Minecraft things on Python. "
+readme = "README.md"
+license = { text = "MIT" }   # 许可证类型
+requires-python = ">=3.6"    # Python 版本要求
+classifiers = [              # 分类标签（可选）
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/c2yz-awa/mc_protocol"
+Repository = "https://github.com/c2yz-awa/mc_protocol"
