@@ -8,3 +8,7 @@
 *.pyc
 __pycache__
 .venv
+
+# PyPI
+dist
+mc_protocol.egg-info

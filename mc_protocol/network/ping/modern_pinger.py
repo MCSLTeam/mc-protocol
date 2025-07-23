@@ -6,4 +6,4 @@ class ModernPinger(Pinger):
         self.host = None
         self.port = None
     def getMotd():
-        with socket
+        pass

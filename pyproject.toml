@@ -2,9 +2,12 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
 [project]
 name = "mc_protocol"  # PyPI 上的唯一名称（不能重复）
-version = "1.0.02-snapshot"           # 版本号
+version = "1.0.0.dev2"           # 版本号
 authors = [
     { name = "c2yz", email = "c2yzawa@outlook.com" },
 ]
