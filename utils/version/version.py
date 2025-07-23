@@ -1,13 +1,14 @@
+from utils.version.protocol_versions import mc_release_protocol_versions
 class MinecraftVersion:
     def __init__(self, version: str):
         self.version = version
-        self.type = self.getVersion()
+        self.type = self.getVersionType()
 
     def isSnapshot(self) -> bool:
         return "w" in self.version
     def isBetaVersion(self) -> bool:
         return self.version.startswith("b")
-    def getVersion(self) -> str:
+    def getVersionType(self) -> str:
         return "Beta" if self.isBetaVersion() else "Snapshot" if self.isSnapshot() else "Release"
     def getMinorVersion(self) -> int:
         try:
@@ -21,7 +22,9 @@ class MinecraftVersion:
             return 0
     def toPythonNamed(self) -> str:
         return self.version.replace(".","_")  
-            
+    
+    def getReleaseProtocolVersion(self) -> int:
+        return mc_release_protocol_versions[self.version]
 def isNewer(ver1: MinecraftVersion | str , ver2: MinecraftVersion | str):
     ver1 = MinecraftVersion(ver1) if isinstance(ver1, str) else ver1
     ver2 = MinecraftVersion(ver2) if isinstance(ver2, str) else ver2
