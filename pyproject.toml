@@ -14,7 +14,7 @@ authors = [
 description = "A quick and easy-to-use library for Minecraft things on Python. "
 readme = "README.md"
 license = { text = "MIT" }   # 许可证类型
-requires-python = ">=3.6"    # Python 版本要求
+requires-python = ">=3.8"    # Python 版本要求
 classifiers = [              # 分类标签（可选）
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
