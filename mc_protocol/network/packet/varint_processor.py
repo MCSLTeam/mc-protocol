@@ -10,17 +10,20 @@ class VarIntProcessor:
                 break
         return bytes(buf)
     @staticmethod
-    def readVarInt(data: bytes, offset:int = 0):
+    def readVarInt(data: bytes, offset: int = 0) -> tuple[int, int]:
         result = 0
+        shift = 0
         while True:
+            if offset >= len(data):
+                raise ValueError("Invalid VarInt packet.")
             byte = data[offset]
-            byte = byte & 0x7F # 0b01111111 因为varint取低7位
-            byte <<= offset
-            offset += 7 # 下一个7位
-            result += byte
-            if (byte & 0x80) == 0:  # varint规定，当高1位为0时包结束
+            offset += 1
+            result |= (byte & 0x7F) << shift
+            if not (byte & 0x80):
                 break
-        return result
-
+            shift += 7
+            if shift >= 32:
+                raise ValueError("VarInt too large")
+        return result, offset
 
 
