@@ -1,3 +1,4 @@
+from struct import pack
 class VarIntProcessor:
     @staticmethod
     def packVarInt(value: int) -> bytes:
@@ -26,4 +27,15 @@ class VarIntProcessor:
                 raise ValueError("VarInt too large")
         return result, offset
 
+    def packModernServerPingHandshake(host: str, port: int, protocolNum: int):
+        handshake = (
+            b"\x00" +
+            VarIntProcessor.packVarInt(protocolNum) +
+            VarIntProcessor.packVarInt(len(host)) + 
+            host.encode() +
+            pack(">H", port) +
+            b'\x01'
+        )
+        return handshake, VarIntProcessor.packVarInt(len(handshake))
+    
 
