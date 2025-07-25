@@ -1,4 +1,5 @@
 from struct import pack
+from exceptions.exceptions import VarIntException
 class VarIntProcessor:
     @staticmethod
     def packVarInt(value: int) -> bytes:
@@ -16,7 +17,7 @@ class VarIntProcessor:
         shift = 0
         while True:
             if offset >= len(data):
-                raise ValueError("Invalid VarInt packet.")
+                raise VarIntException("Invalid VarInt packet.")
             byte = data[offset]
             offset += 1
             result |= (byte & 0x7F) << shift
@@ -24,7 +25,7 @@ class VarIntProcessor:
                 break
             shift += 7
             if shift >= 32:
-                raise ValueError("VarInt too large")
+                raise VarIntException("VarInt too large")
         return result, offset
 
     def packModernServerPingHandshake(host: str, port: int, protocolNum: int):

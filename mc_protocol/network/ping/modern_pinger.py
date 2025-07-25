@@ -33,6 +33,7 @@ class ModernPinger(Pinger):
                 json_len, offset = VarIntProcessor.readVarInt(_response, offset)
 
             self.serverInformation = loads(_response[offset:offset+json_len].decode('utf-8', errors='ignore'))
+        return True
     def getMotd(self):
         return self.serverInformation['description']['text'] if self.serverInformation else None
     def getMaxPlayers(self):

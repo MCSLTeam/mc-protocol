@@ -6,11 +6,14 @@ class Pinger(ABC):
         self.port = None
         self.timeout = 5.0
         self.version = version if isinstance(version, int) else version.getReleaseProtocolVersion()
-        self.serverInformation: dict = None
+        self.serverInformation: dict | list = None
     def setHost(self, host: str):
         self.host = host
     def setPort(self, port: int):
         self.port = port
+    def setTimeout(self, timeout:float):
+        self.timeout = timeout
+        
     @abstractmethod
     def getMotd(self) -> str:
         pass
@@ -24,7 +27,7 @@ class Pinger(ABC):
     def getServerName(self) -> str:
         pass
     @abstractmethod
-    def getServerProtocol(self) -> int:
+    def getServerProtocol(self) -> int | str:
         pass
     @abstractmethod
     def ping(self):
