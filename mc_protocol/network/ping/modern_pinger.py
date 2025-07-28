@@ -14,7 +14,7 @@ class ModernPinger(Pinger):
     def __init__(self, version: int | MinecraftVersion):
         super().__init__(version)
     
-    # 分块从服务器中获取数据 revised by ZYN at 2025-7-27
+    # 分块从服务器中获取数据
     def getDataFromSocket(self, s: socket):
         _response = b''
         while True:
@@ -36,7 +36,7 @@ class ModernPinger(Pinger):
             sock.send(handshake)
             sock.send(b"\x01\x00")
             
-            # 拿到响应 revised by ZYN at 2025-7-27
+            # 拿到响应
             _response = self.getDataFromSocket(sock)
 
             # 解析响应包    
