@@ -12,3 +12,6 @@ __pycache__
 # PyPI
 dist
 mc_protocol.egg-info
+
+# mc
+test server
