@@ -1,3 +1,5 @@
+
+# mc的版本号和对应的协议号
 mc_release_protocol_versions = {
     "1.0.0": 22,
     "1.1": 23,

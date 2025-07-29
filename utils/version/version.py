@@ -1,24 +1,30 @@
+# -*- coding:utf-8 -*-
+# @author  : Yurnu
+# @time    : 2025-7-27
+# @function: 对MC版本进行处理，加以归类，判断
+
+
 from utils.version.protocol_versions import mc_release_protocol_versions
 class MinecraftVersion:
     def __init__(self, version: str):
         self.version = version
         self.type = self.getVersionType()
 
-    def isSnapshot(self) -> bool:
+    def isSnapshot(self) -> bool: # 判断是否是快照版本 21w19a之类的
         return "w" in self.version
-    def isBetaVersion(self) -> bool:
+    def isBetaVersion(self) -> bool: # 判断是否是beta版
         return self.version.startswith("b")
-    def getVersionType(self) -> str:
+    def getVersionType(self) -> str: # 获得版本的类型
         return "Beta" if self.isBetaVersion() else "Snapshot" if self.isSnapshot() else "Release"
-    def getMinorVersion(self) -> int:
+    def getMinorVersion(self) -> int: # 获得二级版本号
         try:
             return int(self.version.split(".")[1])
-        except IndexError:
+        except IndexError: # 21w19a
             return int(self.version.split("w")[1])
-    def getPatchVersion(self) -> int:
-        try:
+    def getPatchVersion(self) -> int: # 获得三级版本号
+        try: # 如果是 1.12.2 的话就获取最后一个元素
             return int(self.version.split(".")[2]) if type != "Snapshot" else self.version[-1]
-        except IndexError:
+        except IndexError: # 如果没有第三级，就返回0
             return 0
     def toPythonNamed(self) -> str:
         return self.version.replace(".","_")  

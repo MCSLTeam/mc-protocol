@@ -1,3 +1,9 @@
+# -*- coding:utf-8 -*-
+# @author  : Yurnu
+# @time    : 2025-7-27
+# @function: 实现mc颜色符号和ANSI码的转换
+
+
 color_to_ansi: dict[str, str] ={
         "§0": "\033[30m",  # 黑色 / Black
         "§1": "\033[34m",  # 深蓝 / Dark Blue
@@ -45,6 +51,7 @@ text_to_color: dict[str, str] = {
     "strikethrough": "§m"
 }
 class Color:
+    # 在一个字符串中 把MC里的颜色符号全换成ANSI 并返回字符串
     @staticmethod
     def textToANSICoded(mc_text: str):
         coded_text = mc_text
@@ -52,6 +59,7 @@ class Color:
             coded_text = coded_text.replace(k, v)
         return coded_text
 
+    # 在一个字符串中 把ANSI全换成MC里的颜色符号 并返回字符串
     @staticmethod
     def ANSICodedToMinecraftColored(ansi_text):
         colored_text = ansi_text
@@ -59,6 +67,8 @@ class Color:
             colored_text = colored_text.replace(v, k)
         return colored_text
     
+    # 把颜色的英语换成mc里的颜色符号
     @staticmethod
     def getMinecraftColorCode(color_text: str):
-        return text_to_color[color_text]
+        if color_text in text_to_color:
+            return text_to_color[color_text]
