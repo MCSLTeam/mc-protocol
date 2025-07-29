@@ -32,6 +32,7 @@ class ModernPinger(Pinger):
                 decoded_response = _response.decode(errors="ignore")
                 # 传入的包中最末尾一个字节的msb位是0，只需判断 _的最后一个元素是否就是包末尾的那个字节
                 # base64有神秘字节导致循环提前结束，直接强制要有一个完整json
+
                 if _[-1] & 0x80 == 0 and decoded_response.count("{") == decoded_response.count("}"):
                     break
     
