@@ -51,6 +51,6 @@ class ManifestVersion:
         try:
             for version in self.manifest['versions']:
                 if version['id'] == ver:
-                    return version['releaseTime-']
+                    return version['releaseTime']
         except:
             return None
