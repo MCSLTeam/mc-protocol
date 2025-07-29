@@ -9,9 +9,9 @@ class MinecraftVersion:
     def __init__(self, version: str):
         self.version = version
         self.type = self.getVersionType()
-
+    
     def isSnapshot(self) -> bool: # 判断是否是快照版本 21w19a之类的
-        return "w" in self.version
+        return "w" in self.version or "rc" in self.version or "pre" in self.version
     def isBetaVersion(self) -> bool: # 判断是否是beta版
         return self.version.startswith("b")
     def getVersionType(self) -> str: # 获得版本的类型
@@ -39,4 +39,3 @@ def isNewer(ver1: MinecraftVersion | str , ver2: MinecraftVersion | str):
     if ver1.getMinorVersion() > ver2.getMinorVersion():
         return True
     return ver1.getPatchVersion() > ver2.getPatchVersion()
-    
