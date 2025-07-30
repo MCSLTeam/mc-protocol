@@ -15,6 +15,16 @@ class ModernPinger(Pinger):
         super().__init__(version)
     
     # 分块从服务器中获取数据
+    def getDataFromSocket(self, s: socket):
+        _response = b''
+        while True:
+            _ = s.recv(4096)
+            _response += _
+
+            # 传入的包中最末尾一个字节的msb位是0，只需判断 _的最后一个元素是否就是包末尾的那个字节
+            if _[-1] & 0x80 == 0:
+                return _response
+
     # ping      
     def ping(self):
         # 建立一个套接字连接 （地址，端口） 看是否能监听到数据

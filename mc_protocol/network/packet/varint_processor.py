@@ -24,7 +24,7 @@ class VarIntProcessor:
             if not (byte & 0x80):
                 break
             shift += 7
-            if shift > 28:
+            if shift >= 28:
                 raise ValueError("VarInt too large")
         return result, offset
     @staticmethod

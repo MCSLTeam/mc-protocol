@@ -1,8 +1,4 @@
-from utils.version.version import MinecraftVersion, isNewer
-from utils.player_utils import PlayerUtils
-from utils.color import Color
-from mc_protocol.network.ping.modern_pinger import ModernPinger
-from mc_protocol.network.packet.varint_processor import VarIntProcessor
+
 from mc_protocol.network.game.packets.login.C2SLoginStartPacket import C2SLoginStartPacket
 from mc_protocol.network.game.packets.login.S2CEncryptionRequest import S2CEncryptionRequest
 from mc_protocol.network.game.packets.login.C2SEncryptionResponse import C2SEncryptionResponse
@@ -22,4 +18,4 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566,), 5.0) as sock:
     c2ser= C2SEncryptionResponse(s2cer.getPublicKey(), s2cer.getVerifyToken())
     sock.send(c2ser.getBytes())
     print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))
-    
+
