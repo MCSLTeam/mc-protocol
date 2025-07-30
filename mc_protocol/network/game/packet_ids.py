@@ -1,3 +1,4 @@
+
 PACK_IDS = {
     "C2SLoginStartPacket": "\x00",
     "C2SEncryptionResponse": "\x01",

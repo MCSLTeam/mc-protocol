@@ -7,7 +7,7 @@ exclude = ["tests*"]
 
 [project]
 name = "mc_protocol"
-version = "1.0.3.dev1"
+version = "1.0.3.dev2"
 
 authors = [
     { name = "c2yz", email = "c2yzawa@outlook.com" },
