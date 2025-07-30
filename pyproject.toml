@@ -7,7 +7,11 @@ exclude = ["tests*"]
 
 [project]
 name = "mc_protocol"
+<<<<<<< HEAD
 version = "1.0.1.dev3"
+=======
+version = "1.0.2"
+>>>>>>> origin/main
 authors = [
     { name = "c2yz", email = "c2yzawa@outlook.com" },
 ]
@@ -22,8 +26,12 @@ classifiers = [
 ]
 dependencies = [
     "requests>=2.25.0",
+<<<<<<< HEAD
     "cryptography",
     "nbt"
+=======
+    "pycryptodome"
+>>>>>>> origin/main
 ]
 
 

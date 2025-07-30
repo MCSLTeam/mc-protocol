@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# @author  : Yurnu
+# @author  : ZYN
 # @time    : 2025-7-27
 # @function: 针对于新版本(1.7)以上服务器的pinger
 
@@ -35,15 +35,23 @@ class ModernPinger(Pinger):
             sock.send(length)
             sock.send(handshake)
             sock.send(b"\x01\x00")
+            _response = b''
+            while True:
+                _ = sock.recv(4096)
+                _response += _
+                decoded_response = _response.decode(errors="ignore")
+                # 传入的包中最末尾一个字节的msb位是0，只需判断 _的最后一个元素是否就是包末尾的那个字节
+                # base64有神秘字节导致循环提前结束，直接强制要有一个完整json
+
+                if _[-1] & 0x80 == 0 and decoded_response.count("{") == decoded_response.count("}"):
+                    break
+    
             
-            # 拿到响应
-            _response = self.getDataFromSocket(sock)
 
             # 解析响应包    
             json_len, offset = VarIntProcessor.readVarInt(_response)
             for i in range(2):
                 json_len, offset = VarIntProcessor.readVarInt(_response, offset)
-
             # 将解析值转为字典
             self.serverInformation = loads(_response[offset:offset+json_len].decode('utf-8', errors='ignore'))
     
