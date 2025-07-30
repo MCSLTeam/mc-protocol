@@ -1,9 +1,8 @@
-from mc_protocol.network.game.packet import Packet
+from mc_protocol.network.game.packet import S2CPacket
 from mc_protocol.network.packet.varint_processor import VarIntProcessor
-class S2CEncryptionRequest(Packet):
+class S2CEncryptionRequest(S2CPacket):
     def __init__(self, erBytes: bytes):
         self.erDict = VarIntProcessor.decodeEncryptionRequest(erBytes)
-
         super().__init__()
     def getServerId(self):
         return self.erDict.get("server_id")

@@ -1,5 +1,5 @@
 # send: 玩家挖掘方块的包
-from packet import PacketSend
+from packet import C2SPacket
 from packet import PACK_IDS
 from packet.varint_processor import VarIntProcessor
 import struct
@@ -19,7 +19,7 @@ DIG_FACES = {
     "east": "\x06"
 }
 
-class PlayerDigging(PacketSend):
+class PlayerDigging(C2SPacket):
     def __init__(self, status: bytes, x: int, y: int, z: int, face: bytes):
         self.status = status # 挖掘状态
         self.x = x # 坐标
@@ -28,7 +28,7 @@ class PlayerDigging(PacketSend):
         self.face = face # 朝向
         super().__init__(PACK_IDS["game"]["playerDigging"], self.getField())
 
-    def __getField__(self):
+    def getField(self):
         # 这里x, y, z要放在一起压缩成长整型
         return VarIntProcessor.packVarInt(self.status) + \
             (((self.x & 0x3ffffff) << 38) | ((self.z & 0x3ffffff) << 12) | (self.y & 0xfff)).to_bytes(8, byteorder='big', signed=True) + \

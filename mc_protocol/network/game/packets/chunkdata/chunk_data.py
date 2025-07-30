@@ -2,13 +2,13 @@
 from nbt import nbt
 from io import BytesIO
 from struct import unpack
-from packet import PacketAccept
+from packet import S2CPacket
 from packet import PACK_IDS
 from packet.varint_processor import VarIntProcessor
 
-class ChunkData(PacketAccept):
+class ChunkData(S2CPacket):
     def __init__(self, data: bytes, hasSkyLight: bool, version: int):
-        super().__init__(PACK_IDS["game"]["chunkData"], data)
+        self.data = data
         self.hasSkyLight = hasSkyLight
         self.version = version # 协议号
 

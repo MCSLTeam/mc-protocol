@@ -1,18 +1,18 @@
 # send:有关于玩家位置的包
 
-from packet import PacketSend
+from packet import C2SPacket
 from packet import PACK_IDS
 from struct import pack # 编码
 
-class PlayerPosition(PacketSend):
+class PlayerPosition(C2SPacket):
     def __init__(self, x: float, y: float, z: float, onGround: bool):
         self.x = x
         self.y = y
         self.z = z
         self.onGround = onGround
-        super().__init__(PACK_IDS["game"]["playerPosition"], self.__getField__())
+        super().__init__(PACK_IDS["game"]["playerPosition"], self.getField())
 
-    def __getField__(self) -> bytes: # 获得字段 
+    def getField(self) -> bytes: # 获得字段 
         return pack(">d", self.x) + \
             pack(">d", self.y) + \
             pack(">d", self.z) + \
