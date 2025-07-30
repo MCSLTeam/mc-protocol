@@ -17,7 +17,8 @@ class C2SLoginStartPacket(C2SPacket):
         )
         return field
     def getPacket(self):
-        return VarIntProcessor.packVarInt(0x00) + self.getField()
+        _ = VarIntProcessor.packVarInt(0x00) + self.getField()
+        return VarIntProcessor.packVarInt(len(_)) + _
     def getHandshake(self):
         handshake = (
             b"\x00"
