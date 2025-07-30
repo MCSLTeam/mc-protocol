@@ -1,6 +1,6 @@
 # send: 玩家挖掘方块的包
 from packet import C2SPacket
-from packet import PACK_IDS
+from packet_ids import PACK_IDS
 from packet.varint_processor import VarIntProcessor
 import struct
 

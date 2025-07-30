@@ -1,7 +1,7 @@
 PACK_IDS = {
-    C2SLoginStartPacket: 0x00,
-    C2SEncryptionResponse: 0x01,
-    S2CEncryptionRequest: 0x01,
+    "C2SLoginStartPacket": "\x00",
+    "C2SEncryptionResponse": "\x01",
+    "S2CEncryptionRequest": "\x01",
     "game": { # 游戏
         "playerPosition": b"\x18",
         "playerPosAndLook": b"\x15",
