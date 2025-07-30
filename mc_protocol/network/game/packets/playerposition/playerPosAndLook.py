@@ -1,15 +1,11 @@
-# -*- coding:utf-8 -*-
-# @author  : ZYN
-# @time    : 2025-7-29
-# @function: 有关于玩家位置和视角的包
+# send:有关于玩家位置和视角的包
 
-from packet import Packet
+from packet import PacketSend
 from packet import PACK_IDS
 from struct import pack # 编码
 
-class PlayerPosition(Packet):
+class PlayerPosition(PacketSend):
     def __init__(self, x: float, y: float, z: float, yaw: float, pitch: float, onGround: bool):
-        self.id = PACK_IDS["game"]["playerPosAndLook"]
         self.x = x
         self.y = y
         self.z = z
@@ -22,7 +18,7 @@ class PlayerPosition(Packet):
             print("错误的水平旋转角或垂直视角")
         self.onGround = onGround
         self.teleportID = b"\x00" # 0
-        super().__init__(id, self.__getField__())
+        super().__init__(PACK_IDS["game"]["playerPosAndLook"], self.__getField__())
 
     def __getField__(self) -> bytes: # 获得字段 
         return pack(">d", self.x) + \
@@ -32,3 +28,6 @@ class PlayerPosition(Packet):
             pack(">d", self.pitch) + \
             b"\x01" if self.onGround else b"\x00" + \
             self.teleportID
+    
+    def __repr__(self):
+        return f"PlayerPosition(x:{self.x}, y:{self.y}, z:{self.z}, yaw:{self.yaw}, pitch:{self.pitch}, onGround:{self.onGround})"

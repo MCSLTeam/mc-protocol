@@ -11,10 +11,11 @@ PACK_IDS = {
         "playerBlockPlacement": b"\x2f",
         "useItem": b"\x32",
         "interactEntity": b"\x31", # 攻击实体
+        "chunkData": b"\x25" # 区块更新
     }
 }
 
-class Packet(ABC):
+class PacketSend(ABC):
     def __init__(self, id, field: bytes): # id 和 字段
         self.id = id
         self.field = field
@@ -25,4 +26,17 @@ class Packet(ABC):
 
     @abstractmethod
     def __repr__(self):
+        pass
+
+    @abstractmethod
+    def __getField__(self):
+        pass
+
+class PacketAccept(ABC):
+    def __init__(self, id: bytes, data: bytes): # id 和 字段
+        self.id = id
+        self.data = data
+
+    @abstractmethod
+    def getMsg(self):
         pass

@@ -32,6 +32,17 @@ class VarIntProcessor:
             if shift >= 28:
                 raise ValueError("VarInt too large")
         return result, offset
+    
+    @staticmethod
+    def unpackPacket(packet: bytes):
+        offset = 0
+        packet_length, offset = VarIntProcessor.readVarInt(packet, offset)
+
+        packet_id, offset = VarIntProcessor.readVarInt(packet, offset)
+    
+        packet_content, offset = packet[offset:]
+        del offset
+        return (packet_length, packet_id, packet_content)
 
     # 生成握手包
     def packModernServerPingHandshake(host: str, port: int, protocolNum: int):
