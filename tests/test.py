@@ -4,21 +4,27 @@ from mc_protocol.network.game.packets.login.S2CEncryptionRequest import S2CEncry
 from mc_protocol.network.game.packets.login.C2SEncryptionResponse import C2SEncryptionResponse
 from mc_protocol.network.ping.modern_pinger import ModernPinger
 from utils.player_utils import PlayerUtils
+from mc_protocol.network.game.packets.login.C2MojangSession import authWithMojang
 import socket
-u = PlayerUtils.getOnlinePlayerUUIDFromMojangRest("wyh_")
+u = PlayerUtils.getOnlinePlayerUUIDFromMojangRest("pwp_ZYN")
 pinger = ModernPinger(765)
 pinger.setHost("cn-js-sq.wolfx.jp")
 pinger.setPort(25566)
 pinger.ping()
 protocol = pinger.getServerProtocol()
 with socket.create_connection(("cn-js-sq.wolfx.jp", 25566,), 5.0) as sock:
-    lsp = C2SLoginStartPacket("wyh_", u, protocol, 25566)
+    lsp = C2SLoginStartPacket("pwp_ZYN", u, protocol, 25566)
     sock.send(lsp.getHandshake())
     sock.send(lsp.getPacket())
     er = sock.recv(4096)
     s2cer = S2CEncryptionRequest(er)
     c2ser= C2SEncryptionResponse(s2cer.getPublicKey(), s2cer.getVerifyToken())
+    at = None
+    with open("./tests/accesstoken.txt", 'r') as f:
+        at = f.read()
+    print(authWithMojang(at, u, '', c2ser.sharedSecret, s2cer.getPublicKey()))
     sock.send(c2ser.getPacket())
+<<<<<<< HEAD
     print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))'''
 
 
@@ -28,3 +34,6 @@ oauth()
 
 
 
+=======
+    print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))
+>>>>>>> 2c6b4b00e1d27c1ec201a820f3d9c0fd05347e06
