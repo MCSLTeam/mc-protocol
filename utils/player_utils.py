@@ -17,7 +17,7 @@ class PlayerUtils:
         pass
     @staticmethod
     def getOfflinePlayerUUID(playerID: str):
-        return uuid3(NAMESPACE_OID, playerID)
+        return str(uuid3(NAMESPACE_OID, playerID))
     @staticmethod
     def getOnlinePlayerUUIDFromMojangRest(username: str):
         try:
