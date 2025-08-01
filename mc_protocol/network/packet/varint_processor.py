@@ -1,4 +1,5 @@
 from struct import pack
+import socket
 class VarIntProcessor:
     # 遵循算法:varint  参考博客:https://blog.csdn.net/weixin_43708622/article/details/111397322
     @staticmethod
@@ -28,27 +29,32 @@ class VarIntProcessor:
                 raise ValueError("VarInt too large")
         return result, offset
     @staticmethod
-    # 生成握手包
-    def packModernServerPingHandshake(host: str, port: int, protocolNum: int):
-        handshake = (
-            b"\x00" +
-            VarIntProcessor.packVarInt(protocolNum) +
-            VarIntProcessor.packVarInt(len(host)) +  
-            host.encode() +
-            pack(">H", port) +
-            b'\x01'
-        )
-        return handshake, VarIntProcessor.packVarInt(len(handshake))
+    def readPacket(self, sock: socket) -> bytes:
+        buffer = bytearray()
+        packetLength = None
+        varintLength = 0
+        
+        while True:
+            if packetLength is not None and len(buffer) >= packetLength + varintLength:
+                break
+
+            chunk = sock.recv(4096)
+            if not chunk:
+                raise ConnectionError("Connection closed")
+            buffer.extend(chunk)
+            if packetLength is None:
+                packetLength, varintLength = self.readVarInt(buffer)
+        return bytes(buffer)
     @staticmethod
     def unpackPacket(packet: bytes):
         offset = 0
-        packet_length, offset = VarIntProcessor.readVarInt(packet, offset)
+        packetLength, offset = VarIntProcessor.readVarInt(packet, offset)
 
         packet_id, offset = VarIntProcessor.readVarInt(packet, offset)
     
         packet_content = packet[offset:]
         del offset
-        return (packet_length, packet_id, packet_content)
+        return (packetLength, packet_id, packet_content)
     @staticmethod
     def decodeEncryptionRequest(er: bytes) -> dict:
         er = VarIntProcessor.unpackPacket(er)[2]
