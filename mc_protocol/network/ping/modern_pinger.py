@@ -36,31 +36,23 @@ class ModernPinger(Pinger):
             sock.send(handshake)
             sock.send(b"\x01\x00")
             _response = b''
-            counter = 1
-            pLength = 0
-            while True:
-                _ = sock.recv(4096)
-                if counter == 1:
-                    buf = BytesIO(_)
-                    pLength = VarIntProcessor.readVarintFromBuffer(buf)
-                    _ = buf.read()
-                _response += _
-                '''decoded_response = _response.decode(errors="ignore")
-                # 传入的包中最末尾一个字节的msb位是0，只需判断 _的最后一个元素是否就是包末尾的那个字节
-                # base64有神秘字节导致循环提前结束，直接强制要有一个完整json'''
-                print(_)
-                if counter * 4096 >= pLength:
-                    break
-                counter += 1
-    
-            
-
-            # 解析响应包    
+            try:
+                _response = VarIntProcessor.readPacket(sock)
+                (packetLength, packet_id, packet_content) = VarIntProcessor.unpackPacket(_response)
+                buffer = BytesIO(packet_content)
+                jsonLen = VarIntProcessor.readVarintFromBuffer(buffer)
+                json = buffer.read(jsonLen)
+                self.serverInformation = loads(json.decode('utf-8', errors='ignore'))
+            except ConnectionError:
+                print("")
+            '''# 解析响应包    
             json_len, offset = VarIntProcessor.readVarInt(_response)
             for i in range(2):
                 json_len, offset = VarIntProcessor.readVarInt(_response, offset)
             # 将解析值转为字典
             self.serverInformation = loads(_response[offset:offset+json_len].decode('utf-8', errors='ignore'))
+            print(self.serverInformation)'''
+            
     
     # 获得服务器motd
     def getMotd(self):

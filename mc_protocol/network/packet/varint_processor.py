@@ -1,5 +1,6 @@
 from struct import pack
 from io import BytesIO
+import socket
 class VarIntProcessor:
     # 遵循算法:varint  参考博客:https://blog.csdn.net/weixin_43708622/article/details/111397322
     @staticmethod
@@ -35,7 +36,6 @@ class VarIntProcessor:
         shift = 0
         while True:
             byte = buffer.read(1) 
-            print(byte)
             sum |= (byte[0] & 0b01111111) << shift
             shift += 7
             if (byte[0] & 0b10000000) == 0:
@@ -53,15 +53,32 @@ class VarIntProcessor:
         )
         return handshake, VarIntProcessor.packVarInt(len(handshake))
     @staticmethod
+    def readPacket(sock: socket) -> bytes:
+        packet = bytearray()
+        packetLength = None
+        varintLength = 0
+        
+        while True:
+            if packetLength is not None and len(packet) >= packetLength + varintLength:
+                break
+
+            chunk = sock.recv(4096)
+            if not chunk:
+                raise ConnectionError("Connection closed")
+            packet.extend(chunk)
+            if packetLength is None:
+                packetLength, varintLength = VarIntProcessor.readVarInt(packet)
+        return bytes(packet)
+    @staticmethod
     def unpackPacket(packet: bytes):
         offset = 0
-        packet_length, offset = VarIntProcessor.readVarInt(packet, offset)
+        packetLength, offset = VarIntProcessor.readVarInt(packet, offset)
 
         packet_id, offset = VarIntProcessor.readVarInt(packet, offset)
     
         packet_content = packet[offset:]
         del offset
-        return (packet_length, packet_id, packet_content)
+        return (packetLength, packet_id, packet_content)
     @staticmethod
     def decodeEncryptionRequest(er: bytes) -> dict:
         er = VarIntProcessor.unpackPacket(er)[2]
