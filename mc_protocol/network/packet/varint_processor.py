@@ -1,4 +1,5 @@
 from struct import pack
+from io import BytesIO
 class VarIntProcessor:
     # 遵循算法:varint  参考博客:https://blog.csdn.net/weixin_43708622/article/details/111397322
     @staticmethod
@@ -27,6 +28,18 @@ class VarIntProcessor:
             if shift >= 28:
                 raise ValueError("VarInt too large")
         return result, offset
+    @staticmethod
+        # 利用Buffer缓冲区来读取varint,郝处:能动态更新buffer指针的值
+    def readVarintFromBuffer(buffer: BytesIO):
+        sum = 0
+        shift = 0
+        while True:
+            byte = buffer.read(1) 
+            print(byte)
+            sum |= (byte[0] & 0b01111111) << shift
+            shift += 7
+            if (byte[0] & 0b10000000) == 0:
+                return sum
     @staticmethod
     # 生成握手包
     def packModernServerPingHandshake(host: str, port: int, protocolNum: int):

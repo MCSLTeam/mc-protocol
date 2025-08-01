@@ -3,7 +3,7 @@ from nbt import nbt
 from io import BytesIO
 from struct import unpack
 from packet import S2CPacket
-from packet import PACK_IDS
+from packet_ids import PACK_IDS
 from packet.varint_processor import VarIntProcessor
 
 class ChunkData(S2CPacket):
@@ -11,18 +11,7 @@ class ChunkData(S2CPacket):
         self.data = data
         self.hasSkyLight = hasSkyLight
         self.version = version # 协议号
-
-    # 利用Buffer缓冲区来读取varint,郝处:能动态更新buffer指针的值
-    def readVarintFromBuffer(buffer: BytesIO):
-        sum = 0
-        shift = 0
-        while True:
-            byte = buffer.read(1) 
-            sum |= (byte & 0b01111111) << shift
-            shift += 7
-            if (byte | 0b10000000) == 0:
-                return sum
-            
+        super.__init__(PACK_IDS["chunkData"])
 
     def getMsg(self):
         flag = 0
@@ -68,11 +57,11 @@ class ChunkData(S2CPacket):
                     "data": blockIDS
                 }
             else: # 调色板优化
-                paletteSize = self.readVarintFromBuffer(lastFieldBuffer) #获得调色板大小
+                paletteSize = VarIntProcessor.readVarintFromBuffer(lastFieldBuffer) #获得调色板大小
                 palette = [] # 拿到调色板
                 for pointer in range(paletteSize):
                     # 拿到所有调色盘id
-                    palette.append(self.readVarintFromBuffer(lastFieldBuffer))
+                    palette.append(VarIntProcessor.readVarintFromBuffer(lastFieldBuffer))
                 # 处理bits_per_block的山(每个方块所占有的位数)
                 bits_per_block = max(4, (paletteSize - 1).bit_length()) # mc强制要求他至少是4,原因是兼容问题，和对齐处理更高效什么乱七八糟的
 
@@ -111,7 +100,7 @@ class ChunkData(S2CPacket):
             })
 
         # 拿到方块实体数据
-        blockEntitiesC = self.readVarintFromBuffer(lastFieldBuffer) # 拿到方块实体的数量
+        blockEntitiesC = VarIntProcessor.readVarintFromBuffer(lastFieldBuffer) # 拿到方块实体的数量
         blockEntities = []
         for pointer in range(blockEntitiesC):
             # 拿到表示坐标的代码(8字节长整型)
@@ -124,8 +113,8 @@ class ChunkData(S2CPacket):
             if (y & 0x800) != 0:
                 y |= 0xfffff000
 
-            blockTypeID = self.readVarintFromBuffer(lastFieldBuffer) # 方块id
-            nbtLength = self.readVarintFromBuffer(lastFieldBuffer) # nbt长度
+            blockTypeID = VarIntProcessor.readVarintFromBuffer(lastFieldBuffer) # 方块id
+            nbtLength = VarIntProcessor.readVarintFromBuffer(lastFieldBuffer) # nbt长度
             nbtData = nbt.NBTFile(lastFieldBuffer.read(nbtLength)) # 获得nbt
             blockEntities.append({
                 "position": {
