@@ -40,18 +40,7 @@ class VarIntProcessor:
             shift += 7
             if (byte[0] & 0b10000000) == 0:
                 return sum
-    @staticmethod
-    # 生成握手包
-    def packModernServerPingHandshake(host: str, port: int, protocolNum: int):
-        handshake = (
-            b"\x00" +
-            VarIntProcessor.packVarInt(protocolNum) +
-            VarIntProcessor.packVarInt(len(host)) +  
-            host.encode() +
-            pack(">H", port) +
-            b'\x01'
-        )
-        return handshake, VarIntProcessor.packVarInt(len(handshake))
+        
     @staticmethod
     def readPacket(sock: socket) -> bytes:
         packet = bytearray()

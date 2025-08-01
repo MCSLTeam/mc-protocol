@@ -27,12 +27,12 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566,), 5.0) as sock:
     print(authWithMojang(at, u, '', c2ser.sharedSecret, s2cer.getPublicKey()))
     sock.send(c2ser.getPacket())
     print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))'''
-version = MinecraftVersion("1.8.8")
+version = MinecraftVersion("1.8.9")
 pinger = ModernPinger(version)
-pinger.setHost("127.0.0.1")
-pinger.setPort(25565)
+pinger.setHost("cn-js-sq.wolfx.jp")
+pinger.setPort(25566)
 pinger.ping()
-with socket.create_connection(("127.0.0.1", 25565), 5.0) as s:
+with socket.create_connection(("cn-js-sq.wolfx.jp", 25566), 5.0) as s:
     startPack = C2SLoginStartPacket("nihao", PlayerUtils.getOfflinePlayerUUID("nihao"), mc_release_protocol_versions["1.8.8"])
     s.send(startPack.getHandshake())
     s.send(startPack.getPacket())
