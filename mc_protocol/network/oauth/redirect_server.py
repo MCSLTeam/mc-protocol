@@ -30,7 +30,7 @@ class CodeHandler(SimpleHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"code received you can close this wnidow.")
+                self.wfile.write(b'Success! You may now close this page.')
                 
                 # 关闭服务器
                 self.server.shutdown_flag = True

@@ -15,8 +15,8 @@ def oauth():
     ?client_id=18a1a4c2-ccae-4306-9e55-e9500a1793d7\
     &response_type=code\
     &scope=XboxLive.signin offline_access\
-    &redirect_uri=http://localhost:11451/")
-    server.serve_forever()
+    &redirect_uri=http://localhost:11451")
+    server.handle_request()
     server.server_close()
     
     '''if exists("./codeFile.txt"):
@@ -32,7 +32,8 @@ def oauth():
         "code": code, 
         "grant_type": "authorization_code",
         "redirect_uri": "http://localhost:11451",
-        "scope": "XboxLive.signin offline_access"
+        "scope": "XboxLive.signin offline_access",
+        "client_secret": ".1p8Q~pZg4SAtJbRckX2Iq-TW8V3_sWkd-h7maQA"
     }
     url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token"
     header = {
@@ -40,9 +41,9 @@ def oauth():
     }
 
     res = post(url=url, data=data, headers=header)
-    print(res)
-    dic = loads(res.text)
-    access_token = dic["access_token"]
+    print(res.text)
+    result = loads(res.text)
+    access_token = result["access_token"]
 
     
 
@@ -51,7 +52,7 @@ def oauth():
         "Properties": {
             "AuthMethod": "RPS",
             "SiteName": "user.auth.xboxlive.com",
-            "RpsTicket": access_token # 第二步中获取的访问令牌
+            "RpsTicket": f"d={access_token}" # 第二步中获取的访问令牌
         },
         "RelyingParty": "http://auth.xboxlive.com",
         "TokenType": "JWT"
@@ -61,8 +62,7 @@ def oauth():
         "Content-Type": "application/json",
         "Accept": "application/json"
     }
-    data = dumps(data)
-    res = post(url=url, data=data, headers=header)
+    res = post(url=url, json=data, headers=header)
     Token = loads(res.text)["Token"]
     uhs = str()
     for i in loads(res.text)["DisplayClaims"]["xui"]:
@@ -88,8 +88,8 @@ def oauth():
         "Accept": "application/json"
     }
     res = post(url=url, data=data, headers=header)
-    dic = loads(res.text)
-    XSTS_token = dic["Token"]
+    result = loads(res.text)
+    XSTS_token = result["Token"]
     '''
 
     获取 Minecraft 访问令牌
@@ -100,8 +100,9 @@ def oauth():
     })
     url = "https://api.minecraftservices.com/authentication/login_with_xbox"
     res = post(url=url, data=data)
-    dic = loads(res.text)
-    jwt = dic["access_token"]#jwt token,也就是Minecraft访问令牌
+    print(res.text)
+    result = loads(res.text)
+    jwt = result["access_token"]#jwt token,也就是Minecraft访问令牌
 
     header = {
         "Authorization": "Bearer " + jwt
@@ -119,9 +120,9 @@ def oauth():
             "Authorization": "Bearer " + jwt
         }
         res = get(url="https://api.minecraftservices.com/minecraft/profile", headers=header)
-        dic = loads(res.text)
-        username = dic["name"]#用户名
-        uuid = dic["id"]#uuid
+        result = loads(res.text)
+        username = result["name"]#用户名
+        uuid = result["id"]#uuid
 
         return {
             "username": username,
