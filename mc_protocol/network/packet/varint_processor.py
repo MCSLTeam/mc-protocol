@@ -68,29 +68,4 @@ class VarIntProcessor:
         packet_content = packet[offset:]
         del offset
         return (packetLength, packet_id, packet_content)
-    @staticmethod
-    def decodeEncryptionRequest(er: bytes) -> dict:
-        er = VarIntProcessor.unpackPacket(er)[2]
-        offset = 0
-        # 1. Server ID
-        server_id_len, offset = VarIntProcessor.readVarInt(er, offset)
-        server_id_end = offset + server_id_len
-        server_id = er[offset:server_id_end].decode("utf-8")
-        offset = server_id_end
-
-        # 2. Public Key
-        public_key_len, offset = VarIntProcessor.readVarInt(er, offset)
-        public_key_end = offset + public_key_len
-        public_key = er[offset:public_key_end]
-        offset = public_key_end
-
-        # 3. verify token
-        verify_token_len, offset = VarIntProcessor.readVarInt(er, offset)
-        verify_token_end = offset + verify_token_len
-        verify_token = er[offset:verify_token_end]
         
-        return {
-            'server_id': server_id,
-            'public_key': public_key,
-            'verify_token': verify_token
-        }
