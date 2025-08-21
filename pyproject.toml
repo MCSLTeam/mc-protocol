@@ -29,5 +29,5 @@ dependencies = [
 
 
 [project.urls]
-Homepage = "https://github.com/c2yz-awa/mc_protocol"
-Repository = "https://github.com/c2yz-awa/mc_protocol"
+Homepage = "https://github.com/MCSLTeam/mc_protocol"
+Repository = "https://github.com/MCSLTeam/mc_protocol"
