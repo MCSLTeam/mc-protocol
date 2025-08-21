@@ -1,6 +1,6 @@
 ## mc_protocol
 简体中文
-一个轻量、快速、易用的、以Minecraft协议为主的库。
+一个轻量、快速、易用的、以Minecraft协议为主的库。  
 [PyPI](https://pypi.org/project/mc-protocol/)
 ### 环境
 本项目基于Windows平台 **Python 3.11**开发，支持**3.8以上**的Python版本。
@@ -22,7 +22,7 @@ python3 -m pip3 install mc-protocol
 
 ### 使用
 #### 开发文档
-我们提供了[**官方**文档](https://github.com/c2yz-awa/mc_protocol/wiki)供查阅。
+我们提供了[**官方**文档](https://github.com/MCSLTeam/mc_protocol/wiki)供查阅。
 
 #### 验证API
 本项目有独立的Azure应用，用于Minecraft的登录。  
