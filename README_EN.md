@@ -1,6 +1,6 @@
 ## mc_protocol
 
-English Version (US English)  
+English | [简体中文](https://github.com/MCSLTeam/mc-protocol/blob/main/README.md)
 A lightweight, fast, and easy-to-use library primarily based on the Minecraft protocol.  
 [PyPI](https://pypi.org/project/mc-protocol/)
 
@@ -39,11 +39,12 @@ This project has a standalone Azure application for Minecraft authentication.
  Client Secret: **.1p8Q~pZg4SAtJbRckX2Iq-TW8V3_sWkd-h7maQA** (expires on July 30, 2027)
  Redirect URI: **http://localhost:11451**
 
-### Acknowledgments
+### Credits
 
 This project would not have been possible without the support of the open-source community. The following are the main contributors:
 
 - [c2yz](https://github.com/c2yz-awa)
 - [ZYN](https://github.com/xxZYNxx)
+- [本樱羽衫](https://github.com/lcix1145)
 
 This project is fully developed using [Visual Studio Code](https://github.com/microsoft/vscode).

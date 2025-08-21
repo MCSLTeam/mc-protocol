@@ -33,5 +33,6 @@ Redirect Uri （重定向链接）：**http://localhost:11451**
 本项目离不开广大开源开发者的支持，以下是主要开发者名单：
 - [c2yz](https://github.com/c2yz-awa)
 - [ZYN](https://github.com/xxZYNxx)  
+- [本樱羽衫](https://github.com/lcix1145)
 
 本项目全部采用[Visual Studio Code](https://github.com/microsoft/vscode)开发。
