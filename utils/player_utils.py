@@ -1,4 +1,5 @@
 from uuid import uuid3, NAMESPACE_OID, UUID
+from json import loads
 import requests
 uuid_api = \
 {
@@ -22,6 +23,14 @@ class PlayerUtils:
     @staticmethod
     def getOfflinePlayerUUID(playerID: str):
         return str(uuid3(NAMESPACE_OID, playerID))
+    @staticmethod
+    def getOnlinePlayerProfileByJwt(jwt: str):
+        header = {
+            "Authorization": "Bearer " + jwt
+        }
+        return loads(requests.get("https://api.minecraftservices.com/minecraft/profile", headers=header).text)
+        
+
     @staticmethod
     def getOnlinePlayerUUIDFromMojangRest(username: str):
         try:

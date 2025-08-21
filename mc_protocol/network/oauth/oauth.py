@@ -1,9 +1,8 @@
 from webbrowser import open as webOpen
 from requests import post, get
 from mc_protocol.network.oauth.redirect_server import CodeServer, CodeHandler
-from requests import get
 from json import loads, dumps
-
+from utils.player_utils import PlayerUtils
 
 
 def oauth():
@@ -25,7 +24,6 @@ def oauth():
             code = file.read()'''
 
     code = CodeHandler.code    
-    print(code)
 
     data = {
         "client_id": "18a1a4c2-ccae-4306-9e55-e9500a1793d7",
@@ -41,7 +39,6 @@ def oauth():
     }
 
     res = post(url=url, data=data, headers=header)
-    print(res.text)
     result = loads(res.text)
     access_token = result["access_token"]
 
@@ -100,7 +97,6 @@ def oauth():
     })
     url = "https://api.minecraftservices.com/authentication/login_with_xbox"
     res = post(url=url, data=data)
-    print(res.text)
     result = loads(res.text)
     jwt = result["access_token"]#jwt token,也就是Minecraft访问令牌
 
@@ -109,25 +105,18 @@ def oauth():
     }
     res = get(url = "https://api.minecraftservices.com/entitlements/mcstore", headers=header)
     if(res.text == ""):
-        return {}
+        return {}  # 玩家没有购买mc
     else:
-        '''
-        
-        获取玩家 UUID
-        
-        '''
-        header = {
-            "Authorization": "Bearer " + jwt
-        }
-        res = get(url="https://api.minecraftservices.com/minecraft/profile", headers=header)
-        result = loads(res.text)
+        result = PlayerUtils.getOnlinePlayerProfileByJwt(jwt)
         username = result["name"]#用户名
         uuid = result["id"]#uuid
-
         return {
             "username": username,
             "uuid": uuid,
-            "access_token": jwt
+            "microsoft_token": access_token,
+            "access_token": jwt,
+            "xsts_token": XSTS_token
+
         }
         
     

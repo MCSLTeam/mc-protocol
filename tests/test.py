@@ -5,6 +5,7 @@ from mc_protocol.network.game.packets.login.C2SEncryptionResponse import C2SEncr
 from mc_protocol.network.ping.modern_pinger import ModernPinger
 from mc_protocol.network.ping.old_pinger import OldPinger
 from utils.player_utils import PlayerUtils
+from mc_protocol.network.oauth.oauth import oauth
 from mc_protocol.network.game.packets.login.C2MojangSession import authWithMojang
 import socket
 from utils.version.version import MinecraftVersion
@@ -27,14 +28,7 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566,), 5.0) as sock:
     print(authWithMojang(at, u, '', c2ser.sharedSecret, s2cer.getPublicKey()))
     sock.send(c2ser.getPacket())
     print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))'''
-version = MinecraftVersion("1.8.9")
-pinger = ModernPinger(version)
-pinger.setHost("cn-js-sq.wolfx.jp")
-pinger.setPort(25566)
-pinger.ping()
-with socket.create_connection(("cn-js-sq.wolfx.jp", 25566), 5.0) as s:
-    startPack = C2SLoginStartPacket("nihao", PlayerUtils.getOfflinePlayerUUID("nihao"), mc_release_protocol_versions["1.8.8"])
-    s.send(startPack.getHandshake())
-    s.send(startPack.getPacket())
+print(oauth())
+
 
 

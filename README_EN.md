@@ -1,6 +1,7 @@
-## mc_protocol
+## mc-protocol
 
 English | [简体中文](https://github.com/MCSLTeam/mc-protocol/blob/main/README.md)
+
 A lightweight, fast, and easy-to-use library primarily based on the Minecraft protocol.  
 [PyPI](https://pypi.org/project/mc-protocol/)
 
