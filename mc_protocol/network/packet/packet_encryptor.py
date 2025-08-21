@@ -7,3 +7,8 @@ class PacketEncryptor:
         return self.cipher.decrypt(p)
     def EncryptPacket(self, p: bytes):
         return self.cipher.encrypt(p)
+    def deEncryptPackets(self, *args: list[bytes]):
+        result = []
+        for p in args:
+            result.append(self.cipher.decrypt(p))
+        return result
