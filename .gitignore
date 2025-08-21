@@ -9,6 +9,7 @@
 __pycache__
 .venv
 accesstoken.txt
+codeFile.txt
 # PyPI
 dist
 mc_protocol.egg-info
