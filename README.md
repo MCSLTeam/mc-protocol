@@ -1,5 +1,5 @@
 ## mc_protocol
-简体中文
+简体中文 | [English](https://github.com/MCSLTeam/mc-protocol/blob/main/README_EN.md)
 一个轻量、快速、易用的、以Minecraft协议为主的库。  
 [PyPI](https://pypi.org/project/mc-protocol/)
 ### 环境
