@@ -16,6 +16,8 @@ class MinecraftVersion:
         return self.version.startswith("b")
     def getVersionType(self) -> str: # 获得版本的类型
         return "Beta" if self.isBetaVersion() else "Snapshot" if self.isSnapshot() else "Release"
+    def getMainVersion(self) -> int:
+        return int(self.version.split("w")[0]) if self.type =="Snapshot" else 1
     def getMinorVersion(self) -> int: # 获得二级版本号
         try:
             return int(self.version.split(".")[1])
@@ -23,7 +25,7 @@ class MinecraftVersion:
             return int(self.version.split("w")[1])
     def getPatchVersion(self) -> int: # 获得三级版本号
         try: # 如果是 1.12.2 的话就获取最后一个元素
-            return int(self.version.split(".")[2]) if type != "Snapshot" else self.version[-1]
+            return int(self.version.split(".")[2]) if self.type != "Snapshot" else self.version[-1]
         except IndexError: # 如果没有第三级，就返回0
             return 0
     def toPythonNamed(self) -> str:
@@ -34,8 +36,5 @@ class MinecraftVersion:
 def isNewer(ver1: MinecraftVersion | str , ver2: MinecraftVersion | str):
     ver1 = MinecraftVersion(ver1) if isinstance(ver1, str) else ver1
     ver2 = MinecraftVersion(ver2) if isinstance(ver2, str) else ver2
-    if ver1.type == "Snapshot" or ver2.type == "Snapshot":
-        return False
-    if ver1.getMinorVersion() > ver2.getMinorVersion():
-        return True
-    return ver1.getPatchVersion() > ver2.getPatchVersion()
+
+    return ver1.getMainVersion() > ver2.getMainVersion() or ver1.getMinorVersion() > ver2.getMinorVersion() or ver1.getPatchVersion() > ver2.getPatchVersion()

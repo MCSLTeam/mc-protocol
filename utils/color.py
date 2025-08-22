@@ -53,7 +53,7 @@ text_to_color: dict[str, str] = {
 class Color:
     # 在一个字符串中 把MC里的颜色符号全换成ANSI 并返回字符串
     @staticmethod
-    def textToANSICoded(mc_text: str):
+    def textToANSICoded(mc_text: str) -> str:
         coded_text = mc_text
         for k, v in color_to_ansi.items():
             coded_text = coded_text.replace(k, v)
@@ -61,7 +61,7 @@ class Color:
 
     # 在一个字符串中 把ANSI全换成MC里的颜色符号 并返回字符串
     @staticmethod
-    def ANSICodedToMinecraftColored(ansi_text):
+    def ANSICodedToMinecraftColored(ansi_text: str) -> str:
         colored_text = ansi_text
         for k, v in color_to_ansi.items():
             colored_text = colored_text.replace(v, k)
@@ -69,6 +69,6 @@ class Color:
     
     # 把颜色的英语换成mc里的颜色符号
     @staticmethod
-    def getMinecraftColorCode(color_text: str):
+    def getMinecraftColorCode(color_text: str) -> str:
         if color_text in text_to_color:
             return text_to_color[color_text]

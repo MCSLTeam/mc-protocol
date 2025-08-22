@@ -1,6 +1,6 @@
 
 # mc的版本号和对应的协议号
-mc_release_protocol_versions = {
+mc_release_protocol_versions: dict[str, int] = {
     "1.0.0": 22,
     "1.1": 23,
     "1.2.1": 28,
