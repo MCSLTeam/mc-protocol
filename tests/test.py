@@ -2,6 +2,8 @@ from utils.version.protocol_versions import mc_release_protocol_versions
 from mc_protocol.network.game.packets.login.C2SLoginStartPacket import C2SLoginStartPacket
 from mc_protocol.network.game.packets.login.S2CEncryptionRequest import S2CEncryptionRequest
 from mc_protocol.network.game.packets.login.C2SEncryptionResponse import C2SEncryptionResponse
+from mc_protocol.network.game.packets.login.S2CLoginSuccess import S2CLoginSuccess
+from mc_protocol.network.game.packets.login.S2CSetCompression import S2CSetCompression
 from mc_protocol.network.ping.modern_pinger import ModernPinger
 from mc_protocol.network.ping.old_pinger import OldPinger
 from utils.player_utils import PlayerUtils
@@ -46,8 +48,7 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566)) as sock:
     C2SER = C2SEncryptionResponse(S2CER.getPublicKey(), S2CER.getVerifyToken())
     authWithMojang(player['access_token'], u, S2CER.getServerId(), C2SER.sharedSecret, S2CER.getPublicKey())
     sock.send(C2SER.getPacket())
-    p = VarIntProcessor.unpackPacket(VarIntProcessor.readPacket(sock))
+    packet = VarIntProcessor.readPacket(sock)
     encryptor = PacketEncryptor(C2SER.sharedSecret)
-    print(encryptor.p[0], encryptor.p[1])
-    print(encryptor.deEncryptPacket(p[2]))
-    
+    print(S2CSetCompression(packet, encryptor).getThreshold())
+    S2CLoginSuccess(VarIntProcessor.readPacket(sock))
