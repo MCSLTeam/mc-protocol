@@ -1,10 +1,10 @@
 # send:有关于玩家位置的包
 
-from packet import C2SPacket
+from packet import Packet
 from packet_ids import PACK_IDS
 from struct import pack # 编码
 
-class PlayerPosition(C2SPacket):
+class PlayerPosition(Packet):
     def __init__(self, x: float, y: float, z: float, onGround: bool):
         self.x = x
         self.y = y

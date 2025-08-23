@@ -1,14 +1,16 @@
-from mc_protocol.network.game.packet import C2SPacket
+from mc_protocol.network.game.packet import ProtocolDirection, ProtocolState, Packet
 from mc_protocol.network.packet.varint_processor import VarIntProcessor
 from uuid import UUID
 import struct
-class C2SLoginStartPacket(C2SPacket):
+class C2SLoginStartPacket(Packet):
+    PACKET_ID = 0x00
+    PROTOCOL_STATE = ProtocolState.LOGIN
+    PROTOCOL_DIRECTION = ProtocolDirection.C2S
     def __init__(self, username: str, uuid: str, protocolNumber: int, serverPort:int = 25565):
         self.username = username.encode()
         self.uuid = UUID(uuid).bytes
         self.protocolNumber = protocolNumber
         self.serverPort = serverPort
-        super().__init__(0x00)
     def getField(self):
         field = (
             VarIntProcessor.packVarInt(len(self.username)) + 

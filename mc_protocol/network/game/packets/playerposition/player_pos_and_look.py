@@ -1,10 +1,10 @@
 # send:有关于玩家位置和视角的包
 
-from packet import C2SPacket
+from packet import Packet
 from packet_ids import PACK_IDS
 from struct import pack # 编码
 
-class PlayerPosition(C2SPacket):
+class PlayerPosition(Packet):
     def __init__(self, x: float, y: float, z: float, yaw: float, pitch: float, onGround: bool):
         self.x = x
         self.y = y

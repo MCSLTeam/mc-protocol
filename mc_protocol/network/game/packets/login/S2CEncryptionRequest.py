@@ -1,7 +1,11 @@
-from mc_protocol.network.game.packet import S2CPacket
+from mc_protocol.network.game.packet import Packet, ProtocolDirection, ProtocolState
 from mc_protocol.network.packet.varint_processor import VarIntProcessor
-class S2CEncryptionRequest(S2CPacket):
+class S2CEncryptionRequest(Packet):
+    PACKET_ID = 0x01
+    PROTOCOL_STATE = ProtocolState.LOGIN
+    PROTOCOL_DIRECTION = ProtocolDirection.S2C
     def __init__(self, erBytes: bytes):
+        
         er = VarIntProcessor.unpackPacket(erBytes)[2]
         offset = 0
         # 1. Server ID
@@ -26,8 +30,6 @@ class S2CEncryptionRequest(S2CPacket):
             'public_key': public_key,
             'verify_token': verify_token
         }
-
-        super().__init__()
     def getServerId(self):
         return self.erDict.get("server_id")
     def getPublicKey(self):
