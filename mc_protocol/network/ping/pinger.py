@@ -15,11 +15,11 @@ class Pinger(ABC):
         self.serverInformation: dict = None # 服务器信息字典
     
     # host
-    def setHost(self, host: str):
+    def setHost(self, host: str) -> None:
         self.host = host
     
     # port
-    def setPort(self, port: int):
+    def setPort(self, port: int) -> None:
         self.port = port
     
     #获得服务器的相关信息
@@ -37,7 +37,7 @@ class Pinger(ABC):
     def getServerName(self) -> str:
         pass
     @abstractmethod
-    def getServerProtocol(self) -> int:
+    def getServerProtocol(self) -> int | str:
         pass
     @abstractmethod
     def ping(self):
