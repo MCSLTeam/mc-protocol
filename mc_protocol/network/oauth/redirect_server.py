@@ -1,6 +1,5 @@
 from http.server import SimpleHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs, quote
-from threading import Thread
+from urllib.parse import urlparse, parse_qs
 from socketserver import TCPServer
 
 # 配置基本参数

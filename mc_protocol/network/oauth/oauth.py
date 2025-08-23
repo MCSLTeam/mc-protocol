@@ -5,7 +5,7 @@ from json import loads, dumps
 from utils.player_utils import PlayerUtils
 
 
-def oauth():
+def oauth() -> dict[str, str]:
     # 创建服务器实例
     server = CodeServer(('', 11451), CodeHandler)
        

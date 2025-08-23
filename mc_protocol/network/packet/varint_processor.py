@@ -1,6 +1,6 @@
-from struct import pack
-from io import BytesIO
 import socket
+from io import BytesIO
+
 class VarIntProcessor:
     # 遵循算法:varint  参考博客:https://blog.csdn.net/weixin_43708622/article/details/111397322
     @staticmethod
@@ -31,7 +31,7 @@ class VarIntProcessor:
         return result, offset
     @staticmethod
         # 利用Buffer缓冲区来读取varint,郝处:能动态更新buffer指针的值
-    def readVarintFromBuffer(buffer: BytesIO):
+    def readVarintFromBuffer(buffer: BytesIO) -> int:
         sum = 0
         shift = 0
         while True:
@@ -59,7 +59,7 @@ class VarIntProcessor:
                 packetLength, varintLength = VarIntProcessor.readVarInt(packet)
         return bytes(packet)
     @staticmethod
-    def unpackPacket(packet: bytes):
+    def unpackPacket(packet: bytes) -> tuple[int, int, bytes]:
         offset = 0
         packetLength, offset = VarIntProcessor.readVarInt(packet, offset)
 

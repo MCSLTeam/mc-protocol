@@ -11,7 +11,7 @@ class C2SPacket(ABC):
     def getPacket(self) -> bytes:
         pass
     @abstractmethod
-    def getField(self):
+    def getField(self) -> bytes:
         pass
     def getId(self):
         return self.id
