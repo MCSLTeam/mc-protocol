@@ -42,22 +42,31 @@ class VarIntProcessor:
                 return sum
         
     @staticmethod
-    def readPacket(sock: socket) -> bytes:
-        packet = bytearray()
-        packetLength = None
-        varintLength = 0
-        
-        while True:
-            if packetLength is not None and len(packet) >= packetLength + varintLength:
+    def readPacket(sock: socket.socket) -> bytes:
+        varint_bytes = bytearray()
+        for i in range(5):
+            byte = sock.recv(1)
+            if not byte:
+                raise ConnectionError("Connection closed while trying to read packet length.")
+            
+            varint_bytes.append(byte[0])
+            if (byte[0] & 0x80) == 0:
                 break
-
-            chunk = sock.recv(4096)
+        else:
+            raise ValueError("Invalid VarInt packet received.")
+        packet_data_length, _ = VarIntProcessor.readVarInt(varint_bytes)
+        del _
+        data_buffer = bytearray()
+        bytes_to_read = packet_data_length
+        while len(data_buffer) < bytes_to_read:
+            remaining_bytes = bytes_to_read - len(data_buffer)
+            chunk = sock.recv(remaining_bytes)
+            
             if not chunk:
-                raise ConnectionError("Connection closed")
-            packet.extend(chunk)
-            if packetLength is None:
-                packetLength, varintLength = VarIntProcessor.readVarInt(packet)
-        return bytes(packet)
+                raise ConnectionError("Connection closed unexpectedly while reading packet data.")
+            
+            data_buffer.extend(chunk)
+        return bytes(varint_bytes) + bytes(data_buffer)
     @staticmethod
     def unpackPacket(packet: bytes) -> tuple[int, int, bytes]:
         offset = 0

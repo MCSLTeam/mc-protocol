@@ -51,4 +51,4 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566)) as sock:
     packet = VarIntProcessor.readPacket(sock)
     encryptor = PacketEncryptor(C2SER.sharedSecret)
     print(S2CSetCompression(packet, encryptor).getThreshold())
-    S2CLoginSuccess(VarIntProcessor.readPacket(sock))
+    S2CLoginSuccess(VarIntProcessor.readPacket(sock), encryptor=encryptor)
