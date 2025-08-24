@@ -18,9 +18,7 @@ class Packet(ABC):
     PROTOCOL_DIRECTION: ProtocolDirection | None  = None
     def __init__(self):
         pass
-    @abstractmethod
     def getPacket(self) -> bytes:
         pass
-    @abstractmethod
     def getField(self) -> bytes:
         pass

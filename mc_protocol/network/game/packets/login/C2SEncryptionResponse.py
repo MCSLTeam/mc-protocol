@@ -31,7 +31,7 @@ class C2SEncryptionResponse(Packet):
             
         return field
     def getPacket(self):
-        _ = VarIntProcessor.packVarInt(0x01) + self.field
+        _ = VarIntProcessor.packVarInt(0x01) + self.getField()
         return VarIntProcessor.packVarInt(len(_)) + _
     def getEncryptor(self):
         return PacketEncryptor(self.sharedSecret)

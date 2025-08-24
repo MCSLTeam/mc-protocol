@@ -37,6 +37,7 @@ u = "096d5f34c30a4c65b60bea19b2d2a159"
 pinger = ModernPinger(765)
 pinger.setHost("cn-js-sq.wolfx.jp")
 pinger.setPort(25566)
+pinger.timeout = 5.0
 pinger.ping()
 v = pinger.getServerProtocol()
 with socket.create_connection(("cn-js-sq.wolfx.jp", 25566)) as sock:
@@ -51,4 +52,4 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566)) as sock:
     packet = VarIntProcessor.readPacket(sock)
     encryptor = PacketEncryptor(C2SER.sharedSecret)
     print(S2CSetCompression(packet, encryptor).getThreshold())
-    S2CLoginSuccess(VarIntProcessor.readPacket(sock), encryptor=encryptor)
+    
