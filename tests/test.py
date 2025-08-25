@@ -9,6 +9,7 @@ from mc_protocol.network.ping.old_pinger import OldPinger
 from utils.player_utils import PlayerUtils
 from mc_protocol.network.packet.varint_processor import VarIntProcessor
 from mc_protocol.network.packet.packet_encryptor import PacketEncryptor
+from mc_protocol.network.packet.packet_compresser import PacketCompresser
 from mc_protocol.network.oauth.oauth import oauth
 from mc_protocol.network.game.packets.login.C2MojangSession import authWithMojang
 import socket
@@ -32,7 +33,10 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566,), 5.0) as sock:
     print(authWithMojang(at, u, '', c2ser.sharedSecret, s2cer.getPublicKey()))
     sock.send(c2ser.getPacket())
     print(c2ser.getEncryptor().deEncryptPacket(sock.recv(4096)))'''
-player = oauth()
+accesstoken = ""
+with open("./tests/accesstoken.txt", "r") as f:
+    accesstoken  = f.read()
+#player = oauth()
 u = "096d5f34c30a4c65b60bea19b2d2a159"
 pinger = ModernPinger(765)
 pinger.setHost("cn-js-sq.wolfx.jp")
@@ -47,9 +51,13 @@ with socket.create_connection(("cn-js-sq.wolfx.jp", 25566)) as sock:
     
     S2CER = S2CEncryptionRequest(VarIntProcessor.readPacket(sock))
     C2SER = C2SEncryptionResponse(S2CER.getPublicKey(), S2CER.getVerifyToken())
-    authWithMojang(player['access_token'], u, S2CER.getServerId(), C2SER.sharedSecret, S2CER.getPublicKey())
+    result = authWithMojang(accesstoken, u, S2CER.getServerId(), C2SER.sharedSecret, S2CER.getPublicKey())
+    print(result)
     sock.send(C2SER.getPacket())
     packet = VarIntProcessor.readPacket(sock)
     encryptor = PacketEncryptor(C2SER.sharedSecret)
     print(S2CSetCompression(packet, encryptor).getThreshold())
-    
+    p = VarIntProcessor.readPacket(sock)
+    p = encryptor.deEncryptPacket(p)
+    compresser = PacketCompresser(2)
+    print(compresser.uncompressPacket(p))

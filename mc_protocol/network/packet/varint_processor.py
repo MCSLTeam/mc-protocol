@@ -80,24 +80,9 @@ class VarIntProcessor:
         del offset
         return (packetLength, packet_id, packet_content)
     @staticmethod
-    def unpackCompressedPacket(packet: bytes) -> tuple[int, int, int, bytes]:
+    def unpackCompressedPacket(packet: bytes) -> tuple[int, int, bytes]:
         offset = 0
         packet_length, offset = VarIntProcessor.readVarInt(packet, offset)
-        
         data_length, offset = VarIntProcessor.readVarInt(packet, offset)
-        
-        remaining_data = packet[offset:]
-
-        if data_length == 0:
-            uncompressed_data = remaining_data
-        else:
-            uncompressed_data = zlib.decompress(remaining_data)
-            if len(uncompressed_data) != data_length:
-                raise ValueError(
-                    f"Expected {data_length} bytes, got {len(uncompressed_data)}"
-                )
-        id_offset = 0
-        packet_id, id_offset = VarIntProcessor.readVarInt(uncompressed_data, id_offset)
-        payload = uncompressed_data[id_offset:]
-
-        return (packet_length, data_length, packet_id, payload)
+        compressed_data = packet[offset:]
+        return (packet_length, data_length, compressed_data)
